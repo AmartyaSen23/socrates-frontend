@@ -39,7 +39,7 @@ export default function Home() {
         } catch (e) {
           // Silently ignore fetch errors during polling
         }
-      }, 800); 
+      }, 2500); 
     }
     return () => clearInterval(interval);
   }, [activeTicker, report]);
