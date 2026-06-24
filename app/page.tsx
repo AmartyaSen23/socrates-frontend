@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchMacro = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/ingestion/macro");
+        const res = await fetch("https://socrates-backend-kbyq.onrender.com/api/v1/ingestion/macro");
         const json = await res.json();
         if (json.data) setMacroData(json.data);
       } catch (error) {
@@ -31,7 +31,7 @@ export default function Home() {
     if (activeTicker && !report) {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`http://localhost:8000/api/v1/ingestion/status/${activeTicker}`);
+          const res = await fetch(`https://socrates-backend-kbyq.onrender.com/api/v1/ingestion/status/${activeTicker}`);
           if (res.ok) {
             const json = await res.json();
             if (json.logs) setLogs(json.logs);
@@ -53,7 +53,7 @@ export default function Home() {
     setActiveTicker(tickerInput.toUpperCase());
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/ingestion/analyze/${tickerInput}`, {
+      const res = await fetch(`https://socrates-backend-kbyq.onrender.com/api/v1/ingestion/analyze/${tickerInput}`, {
         method: "POST",
       });
       const json = await res.json();
@@ -79,7 +79,7 @@ export default function Home() {
     setActiveTicker(tickerInput.toUpperCase());
 
     try {
-      const res = await fetch(`http://localhost:8000/api/v1/ingestion/analyze/deep/${tickerInput}`, {
+      const res = await fetch(`https://socrates-backend-kbyq.onrender.com/api/v1/ingestion/analyze/deep/${tickerInput}`, {
         method: "POST",
       });
       
