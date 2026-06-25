@@ -25,7 +25,6 @@ export default function Home() {
   }, []);
 
   // TIER 4 FIX: Immortal Polling
-  // It now polls as long as we are looking at a ticker and haven't finished the report
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (activeTicker && !report) {
@@ -170,7 +169,8 @@ export default function Home() {
         </div>
 
         {/* Live TradingView Chart */}
-        {activeTicker && !report && !errorMsg && (
+        {/* THE FIX: Removed the "!report" condition so the chart stays alive alongside the dashboard! */}
+        {activeTicker && !errorMsg && (
           <div className="w-full h-[400px] mb-8 rounded-lg overflow-hidden border border-neutral-800 shadow-2xl animate-in fade-in duration-700">
             <iframe
               src={`https://s.tradingview.com/widgetembed/?symbol=${activeTicker}&interval=D&hidesidetoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=dark&style=1&timezone=Etc%2FUTC`}
@@ -189,7 +189,6 @@ export default function Home() {
               <div className="p-6 border border-emerald-900/50 rounded-lg bg-black/40 flex flex-col justify-center items-center text-center">
                 <p className="text-neutral-500 text-sm tracking-widest mb-2">SENTIMENT</p>
                 <p className="text-3xl font-bold text-white">{report.sentiment_label}</p>
-                {/* Normalized FinBERT Score visual representation */}
                 <p className="text-emerald-500 text-sm mt-1">Normalized: {((report.sentiment_score / 50) - 1).toFixed(2)}</p>
               </div>
               <div className="p-6 border border-emerald-900/50 rounded-lg bg-black/40 flex flex-col justify-center items-center text-center">
