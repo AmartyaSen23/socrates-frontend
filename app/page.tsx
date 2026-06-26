@@ -49,7 +49,7 @@ export default function Home() {
     if (activeTicker && loading && !report) {
       interval = setInterval(() => {
         fetchLatestLogs(activeTicker);
-      }, 2000); // Sped up to 2 seconds for snappier UI
+      }, 1000);
     }
     return () => clearInterval(interval);
   }, [activeTicker, loading, report]);
