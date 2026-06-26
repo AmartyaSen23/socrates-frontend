@@ -34,7 +34,7 @@ export default function Home() {
       if (res.ok) {
         const json = await res.json();
         if (json.logs && json.logs.length > 0) {
-          // THE FIX: The backend returns the FULL history. We replace, we do NOT append!
+          // The backend returns the FULL history. We replace, we do NOT append!
           setLogs(json.logs.slice(-MAX_LOGS));
         }
       }
@@ -43,16 +43,18 @@ export default function Home() {
     }
   };
 
-  // Immortal Polling: Polls ONLY while loading is true and report hasn't finished
+  // 🛡️ THE FIX: True Immortal Polling
+  // We removed 'loading' from the condition. It now polls continuously as long as 
+  // you are waiting for a report, even if the backend threw a 400 "Wait" status!
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (activeTicker && loading && !report) {
+    if (activeTicker && !report) {
       interval = setInterval(() => {
         fetchLatestLogs(activeTicker);
-      }, 1000);
+      }, 1500); // 1.5 seconds is the sweet spot for terminal updates
     }
     return () => clearInterval(interval);
-  }, [activeTicker, loading, report]);
+  }, [activeTicker, report]);
 
   const analyzeStock = async (isDeep = false) => {
     const targetTicker = tickerInput.trim().toUpperCase();
@@ -61,6 +63,8 @@ export default function Home() {
     setLoading(true);
     setReport(null);
     setErrorMsg(null);
+    
+    // Wipe logs so we get a clean slate for the new action
     setLogs([isDeep ? "Initiating DEEP RAG Pipeline..." : "Initiating Autonomous Pipeline..."]);
     setActiveTicker(targetTicker);
 
@@ -72,11 +76,12 @@ export default function Home() {
       const res = await fetch(`https://socrates-backend-kbyq.onrender.com${endpoint}`, { method: "POST" });
       const json = await res.json();
       
-      // THE FIX: The API just finished. Grab the absolute final logs IMMEDIATELY
-      // before React has a chance to kill the polling interval!
+      // Grab the absolute final logs IMMEDIATELY before React can kill the polling interval
       await fetchLatestLogs(targetTicker);
       
       if (!res.ok) {
+        // If it's a 400 error (like "SEC Vectorization in progress"), this will safely 
+        // display the alert banner, set loading to false, BUT polling will continue!
         setErrorMsg(json.detail || "An error occurred during analysis.");
       } else {
         setReport(json.data);
