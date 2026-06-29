@@ -1,61 +1,65 @@
-🏛️ Socrates Research Engine - Frontend Interface
+# 🖥️ Socrates AI: Institutional Research Terminal (Frontend)
+![Next.js](https://img.shields.io/badge/Next.js-14+-black.svg?logo=next.js)
+![React](https://img.shields.io/badge/React-18.0-61DAFB.svg?logo=react)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC.svg?logo=tailwind-css)
+![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6.svg?logo=typescript)
+![Vercel](https://img.shields.io/badge/Vercel-Deployment-000000.svg?logo=vercel)
+## 🧠 Overview
 
-Autonomous Quantitative Research Terminal
-Engineered for real-time institutional sentiment analysis and Deep SEC RAG.
+The Socrates Frontend is a high-performance, asynchronous React application designed to replicate the aesthetic, speed, and functionality of an institutional Bloomberg Terminal.
 
-🚀 Overview
+It provides a seamless, non-blocking User Experience (UX) while orchestrating complex backend pipelines, streaming Deep SEC RAG vectorization logs, and rendering multi-dimensional financial intelligence in real-time.
 
-The Socrates Frontend is a high-performance Next.js React application designed to mimic the aesthetic and functionality of a Bloomberg Terminal. It provides a seamless, non-blocking User Experience (UX) while the backend executes heavy quantitative pipelines, vectorizes SEC filings, and aggregates multi-API financial data.
+## ✨ Key Technical Achievements (The "Wow" Factor)
 
-🛠️ Key Architectural Triumphs
+### 1. The "Immortal" Terminal Polling Architecture
 
-1. The "Immortal" Terminal Polling
+Standard loading spinners are opaque and represent poor UX for data-heavy applications. Socrates features a live, sticky terminal console that streams the backend's exact execution telemetry to the user.
 
-Standard loading spinners are opaque. Socrates features a live, sticky terminal console (lg:col-span-4) that streams the backend's exact execution state to the user in real-time.
+Optimized State Management: Employs functional React state updates (setLogs(prev => [...])) and strict array capping (MAX_LOGS = 50) to entirely prevent memory bloat and DOM churn during high-frequency polling.
 
-The Logic: A highly optimized useEffect interval polls the backend's /status/{ticker} endpoint every 1.5 seconds.
+Race-Condition Immunity: Engineered to handle microsecond backend cache-hits. It forces an immediate, synchronous log-fetch upon main API resolution, guaranteeing that even sub-second 200 OK responses update the terminal correctly before the unmounting of the polling interval.
 
-Resilience: It gracefully handles race conditions by strictly fetching logs immediately after the main API call resolves, guaranteeing that sub-second Cache Hits are perfectly rendered to the UI without skipping a beat.
+### 2. Non-Blocking Background RAG UX
 
-2. Non-Blocking Background RAG (Deep SEC)
+When triggering a "DEEP SEC RAG" analysis on a massive, un-vectorized 10-K filing, the UI intelligently intercepts HTTP 400 (Vectorization in progress) status codes.
 
-When triggering a "DEEP SEC RAG" analysis on a massive, un-vectorized 10-K filing, the UI doesn't crash or freeze.
+Instead of crashing or hanging, the UI cleanly detaches the main request, displays a system alert, and transitions the terminal into a "LIVE" state.
 
-It intercepts the backend's 400 HTTPException indicating background processing.
+It streams the recursive chunking and PostgreSQL vector insertion process directly to the user, keeping the operator engaged while the backend processes thousands of semantic chunks.
 
-It displays a clean warning banner, transitions the terminal into a "LIVE" state, and streams the chunking and vector insertion process directly to the user while keeping the TradingView charts fully interactive.
+### 3. Asynchronous Market Integrations
 
-3. Integrated Live Market Data
+TradingView Institutional Charts: Embedded via highly optimized HTML5 iframes that persist dynamically based on the activeTicker state, refusing to unmount during active AI RAG queries.
 
-TradingView Advanced Charts: Embedded instantly upon ticker selection, providing live candlestick data, technical indicators, and historical context right next to the AI's fundamental analysis.
+Live US Macro Dashboard: A dynamic header asynchronously fetching US CPI Inflation, GDP, Unemployment, and Fed Funds Rates to establish a top-down macroeconomic view before localized stock-specific research.
 
-Live US Macro Dashboard: A dynamic header powered by the St. Louis FED API, tracking live US CPI Inflation, GDP, Unemployment, and Fed Funds Rates.
+### 4. Grid-Stabilized UI/UX
 
-💻 Tech Stack
+Engineered using a strict 12-column CSS Grid architecture. The terminal operates as a persistent, sticky 4-column sidebar that maps execution telemetry alongside an 8-column primary dashboard rendering Llama-3's intelligence output (Sentiment, Bull/Bear Cases, Risk/Growth matrices).
 
-Framework: Next.js (React)
+## 🛠️ Tech Stack & Requirements
 
-Styling: Tailwind CSS (Deep neutral/emerald color palette for quantitative aesthetics)
+Framework: Next.js (App Router compatible), React 18+
 
-Components: Native HTML5 iframes (TradingView), pure React state management for log queues.
+Styling: Tailwind CSS (Deep neutral/emerald/red quantitative palette)
 
-🧠 The Intelligence Dashboard
+Data Fetching: Native fetch API with highly optimized useEffect interval cleanup.
 
-Once the backend Groq Agent resolves the data, the UI renders a 3-tier intelligence matrix:
+Charting: Embedded TradingView Advanced Chart Widgets.
 
-Scoring: Normalized Sentiment ([-1.0 to 1.0]), Bull Score, and Risk Score.
-
-Prose Analysis: Institutional Bull Case and Bear Case generated via Llama-3 70b.
-
-Data Points: Extracted Growth Drivers and Major Risks mapped directly from SEC 10-K filings.
-
-⚙️ Quick Start
-
+## 🚀 Quick Start
+```
 # Install dependencies
 npm install
 
-# Run the development server
+# Boot the terminal in development mode
 npm run dev
+```
 
+(Open http://localhost:3000 to initiate the uplink).
 
-Open http://localhost:3000 with your browser to see the result.
+## 👨‍💻 Author
+
+Amartya Sen | B.Tech in Artificial Intelligence and Machine Learning (Core CSE with Specialization)
+Architecting resilient, autonomous AI systems at the intersection of quantitative finance and deep learning.
