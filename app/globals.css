@@ -46,3 +46,28 @@ body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
 }
 
+/* Hide scrollbars on horizontal ribbons while keeping scroll ability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom dynamic cursor enhancements for fine-pointer devices */
+@media (pointer: fine) {
+  body.custom-cursor-enabled,
+  body.custom-cursor-enabled button,
+  body.custom-cursor-enabled a,
+  body.custom-cursor-enabled [role="button"] {
+    cursor: none !important;
+  }
+  body.custom-cursor-enabled input,
+  body.custom-cursor-enabled textarea,
+  body.custom-cursor-enabled select {
+    cursor: text !important;
+  }
+}
+
+

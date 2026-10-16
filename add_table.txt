@@ -1,0 +1,75 @@
+================================================================================
+SOCRATES RESEARCH ENGINE — SUPABASE TABLE SETUP GUIDE (`soc_feedbacks`)
+Author: Amartya Sen
+================================================================================
+
+Follow these steps to create the `soc_feedbacks` table in your Supabase project
+so the Socrates Terminal UI can store and display user ratings and feedback.
+
+--------------------------------------------------------------------------------
+STEP 1: OPEN SUPABASE SQL EDITOR
+--------------------------------------------------------------------------------
+1. Log in to your Supabase Dashboard (https://supabase.com/dashboard).
+2. Select your Socrates Research Engine project.
+3. In the left navigation sidebar, click on "SQL Editor".
+4. Click "+ New query".
+
+--------------------------------------------------------------------------------
+STEP 2: PASTE AND RUN THE FOLLOWING SQL SCRIPT
+--------------------------------------------------------------------------------
+
+```sql
+-- 1. Create the `soc_feedbacks` table inside the public schema
+CREATE TABLE IF NOT EXISTS public.soc_feedbacks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_name TEXT NOT NULL DEFAULT 'Anonymous Quant',
+    user_role TEXT DEFAULT 'Institutional Researcher',
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    category TEXT NOT NULL DEFAULT 'General Platform',
+    ticker_context TEXT,
+    message TEXT NOT NULL CHECK (char_length(trim(message)) > 0),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- 2. Create indexes for fast retrieval of recent feedbacks and rating analytics
+CREATE INDEX IF NOT EXISTS idx_soc_feedbacks_created_at
+    ON public.soc_feedbacks (created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_soc_feedbacks_rating
+    ON public.soc_feedbacks (rating);
+
+-- 3. Enable Row Level Security (RLS) with policies allowing backend/anon access
+ALTER TABLE public.soc_feedbacks ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public read access to soc_feedbacks" ON public.soc_feedbacks;
+CREATE POLICY "Allow public read access to soc_feedbacks"
+    ON public.soc_feedbacks
+    FOR SELECT
+    USING (true);
+
+DROP POLICY IF EXISTS "Allow public insert access to soc_feedbacks" ON public.soc_feedbacks;
+CREATE POLICY "Allow public insert access to soc_feedbacks"
+    ON public.soc_feedbacks
+    FOR INSERT
+    WITH CHECK (rating >= 1 AND rating <= 5 AND char_length(trim(message)) <= 2000);
+
+-- 4. (Optional) Seed an initial verification feedback record
+INSERT INTO public.soc_feedbacks (user_name, user_role, rating, category, ticker_context, message)
+VALUES (
+    'Quantitative Desk Lead',
+    'Portfolio Strategist',
+    5,
+    'Deep SEC RAG',
+    'NVDA',
+    'Blazing fast 10-K vector retrieval and institutional bull/bear synthesis. The XBRL + Cohere + Groq pipeline feels like a $24k/yr terminal.'
+);
+```
+
+--------------------------------------------------------------------------------
+STEP 3: VERIFY TABLE CREATION
+--------------------------------------------------------------------------------
+1. Click "Run" (or press Ctrl+Enter) in the Supabase SQL Editor.
+2. Navigate to "Table Editor" in the left sidebar and confirm `soc_feedbacks` appears.
+3. Your FastAPI backend (`/api/v1/ingestion/feedback`) and Next.js frontend
+   will automatically connect to `soc_feedbacks` with zero further configuration!
+
