@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- ANIMATED HERO WAVE BANNER -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:06090e,35:0f172a,70:065f46,100:0891b2&height=230&section=header&text=SOCRATES%20AI%20%E2%80%94%20RESEARCH%20TERMINAL&fontSize=40&fontColor=ffffff&fontAlignY=38&desc=Institutional%20Next.js%2016%20%26%20React%2019%20Workstation%20%E2%80%A2%20Live%20RAG%20Telemetry%20%E2%80%A2%2060fps%20Quantum%20UX&descAlignY=60&descSize=15&animation=fadeIn" width="100%" alt="Socrates AI Frontend Banner" />
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:06090e,35:0f172a,70:065f46,100:0891b2&height=230&section=header&text=SOCRATES%20AI%20%E2%80%94%20RESEARCH%20TERMINAL&fontSize=40&fontColor=ffffff&fontAlignY=38&desc=Institutional%20Next.js%2016%20%2B%20React%2019%20Workstation%20%E2%80%A2%20Live%20RAG%20Telemetry%20%E2%80%A2%2060fps%20Quantum%20UX&descAlignY=60&descSize=15&animation=fadeIn" width="100%" alt="Socrates AI Frontend Banner" />
 
 <!-- ANIMATED TYPING TELEMETRY SVG -->
 <a href="https://socrates-frontend.vercel.app">
